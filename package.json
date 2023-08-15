@@ -1,0 +1,21 @@
+{
+  "name": "obj-to-sheet",
+  "author": "Almighty Baka <ivan@almightybaka.com> (https://almightybaka.com/)",
+  "main": "src/index.ts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "google-spreadsheet": "^3.3.0",
+    "xlsx-populate": "^1.21.0"
+  },
+  "devDependencies": {
+    "@types/google-spreadsheet": "^3.3.2",
+    "@types/node": "^20.3.1",
+    "ts-jest": "^29.1.0"
+  }
+}
