@@ -1,9 +1,9 @@
 import 'dotenv/config'
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, WorksheetDimension } from 'google-spreadsheet'
 
-import { ExportSettings } from './types'
+import { ExportSettings } from '../types'
 
-export default async function generateGoogleSheets(data: object[], settings?: ExportSettings): Promise<void> {
+export async function getGoogleSheets(data: object[], settings?: ExportSettings): Promise<void> {
 	// authenticating
 	if (!process.env.GOOGLE_SPREADSHEET_ID ||
 		!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ||
@@ -68,4 +68,3 @@ async function updateSize(sheet: GoogleSpreadsheetWorksheet, dimension: Workshee
 		developerMetadata: []
 	}, { startIndex: index, endIndex: index + 1 })
 }
-

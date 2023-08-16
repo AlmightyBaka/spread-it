@@ -1,7 +1,7 @@
 import { unlink } from 'node:fs'
 import { describe, expect, test, afterAll } from '@jest/globals'
 import xlsx from 'xlsx-populate'
-import generateExcel from './generateExcel.js'
+import { getFileExcel } from './index.js'
 
 describe('writing Excel spreadsheet module', () => {
 	type TestObj = { testColumn: string, testBool: boolean, testNumber?: number, a?: string, b?: string, c?: string, d?: string, }
@@ -17,7 +17,7 @@ describe('writing Excel spreadsheet module', () => {
 	})
 
 	test('should format and write data to file', async () => {
-		await generateExcel(data, {
+		await getFileExcel(data, {
 			fileName,
 			sheetName,
 			setHeaders: true,

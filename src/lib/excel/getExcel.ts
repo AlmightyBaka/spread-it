@@ -1,9 +1,10 @@
 import xlsx from 'xlsx-populate'
 
-import { ExportSettings } from './types'
+import { ExportSettings } from '../types'
 
-export default async function generateExcel(data: object[], settings?: ExportSettings): Promise<void> {
+export default async function getExcel(data: object[], settings?: ExportSettings): Promise<any> {
 	// setting up spreadsheet file
+	// TODO: look into using xlsx.fromDataAsync
 	const doc = await xlsx.fromBlankAsync()
 	const sheet = doc.sheet(0)
 	if (settings?.sheetName) {
@@ -45,8 +46,7 @@ export default async function generateExcel(data: object[], settings?: ExportSet
 		}
 	})
 
-	// writing file
-	await doc.toFileAsync(settings?.fileName ? settings?.fileName : 'output.xlsx')
+	return doc
 }
 
 function iterateObjKeys(obj: any, callback: (index: number, key: string) => void): void {
