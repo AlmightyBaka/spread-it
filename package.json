@@ -1,7 +1,11 @@
 {
   "name": "obj-to-sheet",
+  "description": "Export your JavaScript object into a sheet file",
   "author": "Almighty Baka <ivan@almightybaka.com> (https://almightybaka.com/)",
-  "main": "src/index.ts",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["/dist"],
   "private": true,
   "type": "module",
   "scripts": {
