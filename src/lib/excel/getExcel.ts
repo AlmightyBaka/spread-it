@@ -3,12 +3,12 @@ import xlsx, { Sheet, Workbook } from 'xlsx-populate'
 import { Settings } from '../types'
 
 export default async function getExcel(data: object[], settings?: Settings): Promise<Workbook> {
-	// setting up spreadsheet file
+	// setting up spreadsheet
 	// TODO: look into using xlsx.fromDataAsync
 	const doc = await xlsx.fromBlankAsync()
 	const sheet = doc.sheet(0) as Sheet
 	if (settings?.sheetName) {
-		sheet.name(settings?.sheetName)
+		sheet.name(settings.sheetName)
 	}
 
 	// setting headers
@@ -18,8 +18,8 @@ export default async function getExcel(data: object[], settings?: Settings): Pro
 		})
 	
 		// setting headers styles
-		if (settings?.columnWidth) {
-			for (let column of settings?.columnWidth) {
+		if (settings.columnWidth) {
+			for (let column of settings.columnWidth) {
 				sheet.column(column.index + 1).width(column.width)
 			}
 		}

@@ -1,3 +1,4 @@
+// TODO: set headers style
 export type Settings = {
     fileName?: string,
     sheetName?: string,

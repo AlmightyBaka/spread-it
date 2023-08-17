@@ -4,7 +4,7 @@ import getExcel from './getExcel'
 export async function getExcelFile(data: object[], settings?: Settings): Promise<void> {
 	const doc = await getExcel(data, settings)
 
-	await doc.toFileAsync(settings?.fileName ? settings?.fileName : 'output.xlsx')
+	await doc.toFileAsync(settings?.fileName ? settings.fileName : 'output.xlsx')
 }
 
 // TODO: add export settings perhaps?

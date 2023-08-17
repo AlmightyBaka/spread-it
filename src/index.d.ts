@@ -1,3 +1,4 @@
+// TODO: fix overloaded methods
 declare module 'xlsx-populate' {
 	/**
 	 * App properties
@@ -372,9 +373,12 @@ declare module 'xlsx-populate' {
 		style(...args: any[]): Cell;
 		_style: any;
 		/**
-		 * Gets the width.
-		 * @returns {undefined|number} The width (or undefined).
-		 */ /**
+		* Sets the width.
+		* @param {number} width - The width of the column.
+		* @returns {undefined|number} The width (or undefined).
+		*/
+		width(): undefined | number;
+		/**
 		* Sets the width.
 		* @param {number} width - The width of the column.
 		* @returns {Column} The column.
