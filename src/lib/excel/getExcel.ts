@@ -1,8 +1,8 @@
 import xlsx from 'xlsx-populate'
 
-import { ExportSettings } from '../types'
+import { Settings } from '../types'
 
-export default async function getExcel(data: object[], settings?: ExportSettings): Promise<any> {
+export default async function getExcel(data: object[], settings?: Settings): Promise<any> {
 	// setting up spreadsheet file
 	// TODO: look into using xlsx.fromDataAsync
 	const doc = await xlsx.fromBlankAsync()

@@ -5,7 +5,9 @@
   "version": "0.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["/dist"],
+  "files": [
+    "/dist"
+  ],
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,7 +15,6 @@
     "build": "tsc"
   },
   "dependencies": {
-    "dotenv": "^16.3.1",
     "google-spreadsheet": "^3.3.0",
     "xlsx-populate": "^1.21.0"
   },

@@ -1,7 +1,7 @@
-import { ExportSettings } from '../types'
+import { Settings } from '../types'
 import getExcel from './getExcel'
 
-export async function getExcelFile(data: object[], settings?: ExportSettings): Promise<void> {
+export async function getExcelFile(data: object[], settings?: Settings): Promise<void> {
 	const doc = await getExcel(data, settings)
 
 	// writing file
@@ -10,7 +10,7 @@ export async function getExcelFile(data: object[], settings?: ExportSettings): P
 
 // TODO: add export settings perhaps?
 // https://www.npmjs.com/package/xlsx-populate#Workbook+outputAsync
-export async function getExcelBuffer(data: object[], settings?: ExportSettings): Promise<Buffer> {
+export async function getExcelBuffer(data: object[], settings?: Settings): Promise<Buffer> {
 	const doc = await getExcel(data, settings)
 
 	// writing file
