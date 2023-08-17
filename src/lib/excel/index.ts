@@ -4,7 +4,6 @@ import getExcel from './getExcel'
 export async function getExcelFile(data: object[], settings?: Settings): Promise<void> {
 	const doc = await getExcel(data, settings)
 
-	// writing file
 	await doc.toFileAsync(settings?.fileName ? settings?.fileName : 'output.xlsx')
 }
 
@@ -13,6 +12,5 @@ export async function getExcelFile(data: object[], settings?: Settings): Promise
 export async function getExcelBuffer(data: object[], settings?: Settings): Promise<Buffer> {
 	const doc = await getExcel(data, settings)
 
-	// writing file
-	return await doc.outputAsync('nodebuffer')
+	return await doc.outputAsync('nodebuffer') as Buffer
 }

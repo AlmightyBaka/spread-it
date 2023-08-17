@@ -9,7 +9,6 @@ export async function getGoogleSheets(data: object[], settings: SettingsGoogleSh
 			throw new CredentialsError('Google Sheets credentials must be provided')
 	}
 
-	// uploading data to Google Sheets
 	await uploadGoogleSheets(data, settings)
 }
 

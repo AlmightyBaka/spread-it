@@ -1,12 +1,12 @@
-import xlsx from 'xlsx-populate'
+import xlsx, { Sheet, Workbook } from 'xlsx-populate'
 
 import { Settings } from '../types'
 
-export default async function getExcel(data: object[], settings?: Settings): Promise<any> {
+export default async function getExcel(data: object[], settings?: Settings): Promise<Workbook> {
 	// setting up spreadsheet file
 	// TODO: look into using xlsx.fromDataAsync
 	const doc = await xlsx.fromBlankAsync()
-	const sheet = doc.sheet(0)
+	const sheet = doc.sheet(0) as Sheet
 	if (settings?.sheetName) {
 		sheet.name(settings?.sheetName)
 	}
