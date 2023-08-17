@@ -1,6 +1,6 @@
 {
   "name": "obj-to-sheet",
-  "description": "Export your JavaScript object into a sheet file",
+  "description": "A simple way to export your JavaScript objects into a spreadsheet",
   "author": "Almighty Baka <ivan@almightybaka.com> (https://almightybaka.com/)",
   "version": "0.0.0",
   "main": "dist/index.js",
