@@ -2,6 +2,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, WorksheetDimension } fro
 
 import { SettingsGoogleSheets } from '../types'
 
+// TODO: refactor to use IDocumentProcessor
 export default async function getGoogleSheets(data: object[], settings: SettingsGoogleSheets): Promise<void> {
 	// authenticating
 	// TODO: consider other ways to authenticate
@@ -20,11 +21,11 @@ export default async function getGoogleSheets(data: object[], settings: Settings
 	}
 
 	// setting headers
-	// TODO: make settings.setHeaders actually work
+	// TODO: make settings.setHeader actually work
 	const keys: string[] = Object.keys(data[0] as any)
 	await sheet.setHeaderRow(keys)
 
-	if (settings.setHeaders) {
+	if (settings.setHeader) {
 		// setting headers styles
 		if (settings.columnWidth) {
 			for (let column of settings.columnWidth) {

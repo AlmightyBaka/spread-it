@@ -6,7 +6,7 @@ import xlsx, { Sheet } from 'xlsx-populate'
 
 import { getExcelFile, getExcelBuffer } from '.'
 
-describe('writing Excel spreadsheet module', () => {
+describe('writing Excel document module', () => {
 	const fileName = 'test-output.xlsx'
 	const sheetName = 'test sheet'
 
@@ -15,47 +15,48 @@ describe('writing Excel spreadsheet module', () => {
 		unlink('./output.xlsx', () => {})
 	})
 
-	test('should get an Excel file', async () => {
+	test('should write a file', async () => {
 		await getExcelFile([{}], {
 			fileName,
 			sheetName,
 		})
 
 		const doc = await xlsx.fromFileAsync(fileName)
-		const sheet = doc.sheet(0) as Sheet
+		expect(doc).toBeDefined()
 
+		const sheet = doc.sheet(0) as Sheet
 		expect(sheet.name()).toBe(sheetName)
 	})
 
-	test('should get an Excel file with no fileName field', async () => {
+	test('should write a file with default filename', async () => {
 		await getExcelFile([{}], {
 			sheetName,
 		})
 
 		const doc = await xlsx.fromFileAsync('output.xlsx')
-		const sheet = doc.sheet(0) as Sheet
+		expect(doc).toBeDefined()
 
+		const sheet = doc.sheet(0) as Sheet
 		expect(sheet.name()).toBe(sheetName)
 	})
 
-	test('should get an Excel file with default settings', async () => {
+	test('should write a file with default settings', async () => {
 		await getExcelFile([{}])
 
 		const doc = await xlsx.fromFileAsync('output.xlsx')
+		expect(doc).toBeDefined()
+		
 		const sheet = doc.sheet(0) as Sheet
-
-		expect(sheet.name()).toBe('Sheet1')
+		expect(sheet.name()).toBe('Data')
 	})
 
-	test('should get an Excel data buffer', async () => {
-		const buffer = await getExcelBuffer([{}], {
-			fileName,
-			sheetName,
-		})
+	test('should get a data buffer', async () => {
+		const buffer = await getExcelBuffer([{}])
 
 		const doc = await xlsx.fromDataAsync(buffer)
+		expect(doc).toBeDefined()
+		
 		const sheet = doc.sheet(0) as Sheet
-
-		expect(sheet.name()).toBe(sheetName)
+		expect(sheet.name()).toBe('Data')
 	})
 })
