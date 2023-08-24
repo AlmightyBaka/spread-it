@@ -1,6 +1,6 @@
 import xlsx, { Sheet, Workbook } from 'xlsx-populate'
 
-import { IDocumentProcessor, ColumnWidth, Settings } from '../types'
+import { IDocumentProcessor, ColumnWidth } from '../types'
 
 export default class ExcelProcessor implements IDocumentProcessor<Workbook> {
 	private document!: Workbook

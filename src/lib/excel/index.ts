@@ -2,6 +2,13 @@ import { SettingsExcelFile, SettingsExcel } from '../types'
 import DocumentFactory from '../common/documentFactory'
 import ExcelProcessor from './processor'
 
+/**
+ * Writes an .xlsx file.
+ * @remarks only available in local environments
+ * @param {object[]} data data to be inserted
+ * @param {SettingsExcelFile} [settings] document settings
+ * @return {Promise<void>} promise that resolves upon completion
+ */
 export async function getExcelFile(data: object[], settings?: SettingsExcelFile): Promise<void> {
 	const factory = new DocumentFactory(new ExcelProcessor(), settings)
 	const doc = await factory.create(data)
@@ -11,6 +18,12 @@ export async function getExcelFile(data: object[], settings?: SettingsExcelFile)
 
 // TODO: add other output types
 // https://www.npmjs.com/package/xlsx-populate#Workbook+outputAsync
+/**
+ * Gets an Excel document buffer.
+ * @param {object[]} data data to be inserted
+ * @param {SettingsExcel} [settings] document settings
+ * @return {Promise<Buffer>} document buffer
+ */
 export async function getExcelBuffer(data: object[], settings?: SettingsExcel): Promise<Buffer> {
 	const factory = new DocumentFactory(new ExcelProcessor(), settings)
 	const doc = await factory.create(data)
