@@ -2,6 +2,8 @@ import { SettingsExcelFile, SettingsExcel } from '../types'
 import DocumentFactory from '../common/documentFactory'
 import ExcelProcessor from './processor'
 
+// TODO: export as getExcel().file(), getExcel().buffer(), etc
+
 /**
  * Writes an .xlsx file.
  * @remarks only available in local environments

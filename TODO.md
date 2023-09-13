@@ -4,4 +4,4 @@
 - [ ] Update `google-spreadsheet` to `v4`
 - [ ] Improve data insertion performance
 - [ ] Add support for browsers
-- [ ] Resolve TODOs in code (`8 left`)
+- [ ] Resolve TODOs in code (`9 left`)
