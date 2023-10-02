@@ -1,5 +1,11 @@
 // TODO: set headers style
 
+export enum SheetType {
+    Csv = 'csv',
+    Excel = 'excel',
+    GoogleSheets = 'gsheets',
+}
+
 export type ColumnWidth = {
     index: number,
     width: number,
@@ -60,7 +66,6 @@ export type Settings = SettingsExcel | SettingsGoogleSheets | SettingsCsv
 export type DefaultSettings = HasSheets & HasHeader & HasHeaderStyle & HasShrink & HasColumnWidth
 
 export interface IDocumentProcessor<Document> {
-	ready(settings: Settings): Promise<void>,
 	getDocument(settings: Settings): Promise<Document>,
 	insertData(data: object[]): Promise<void>
 	setSheetName(sheetName: string): Promise<void>,
