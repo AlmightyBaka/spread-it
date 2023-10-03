@@ -1,5 +1,5 @@
-import { SettingsGoogleSheets, CredentialsError } from '../types'
-import uploadGoogleSheets from './getGoogleSheets'
+import DocumentFactory from '../common/documentFactory'
+import { SettingsGoogleSheets, CredentialsError, SheetType } from '../types'
 
 /**
  * Writes a Google Sheets document.
@@ -11,7 +11,8 @@ import uploadGoogleSheets from './getGoogleSheets'
 export async function getGoogleSheets(data: object[], settings: SettingsGoogleSheets): Promise<void> {
 	checkCredentials(settings)
 
-	await uploadGoogleSheets(data, settings)
+	const factory = new DocumentFactory(SheetType.GoogleSheets, settings)
+	await factory.create(data)
 }
 
 function checkCredentials(settings: SettingsGoogleSheets) {

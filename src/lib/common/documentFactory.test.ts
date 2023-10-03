@@ -4,8 +4,7 @@ import { describe, expect, test } from '@jest/globals'
 import { Sheet } from 'xlsx-populate'
 
 import DocumentFactory from './documentFactory'
-import ExcelProcessor from '../excel/processor'
-import { ColumnWidth, DefaultSettings } from '../types'
+import { ColumnWidth, DefaultSettings, SheetType } from '../types'
 
 describe('Document factory module', () => {
 	type TestObj = { testString: string, testBool: boolean, testNumber?: number, a?: any, b?: string, c?: string, d?: string, }
@@ -25,7 +24,7 @@ describe('Document factory module', () => {
 	}
 
 	test('should construct an Excel document', async () => {
-		const factory = new DocumentFactory(new ExcelProcessor(), settings)
+		const factory = new DocumentFactory(SheetType.Excel, settings)
 		const doc = await factory.create(data)
 		expect(doc).toBeDefined()
 
@@ -64,4 +63,13 @@ describe('Document factory module', () => {
 		})
 		expect(sheet.column(2).width()).toBeUndefined()
 	})
+
+	test('should construct an Google Sheets document', async () => {
+		const factory = new DocumentFactory(SheetType.GoogleSheets, { ...settings, ... { credentials: {
+			privateKey: 'privateKey',
+			serviceAccountEmail: 'serviceAccountEmail'
+		}, spreadsheetId: 'spreadsheetId' }})
+		const doc = await factory.create(data)
+		expect(doc).toBeDefined()
+	}, 5000000)
 })

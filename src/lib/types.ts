@@ -11,7 +11,7 @@ export type ColumnWidth = {
     width: number,
 }
 
-type Credentials = {
+export type GoogleSheetsCredentials = {
     serviceAccountEmail: string,
     privateKey: string,
 }
@@ -56,7 +56,7 @@ export type SettingsExcelFile = HasSheets & HasHeader & HasHeaderStyle & HasColu
 const a:SettingsExcel = {setHeader:true}
 export type SettingsGoogleSheets = HasSheets & HasHeader & HasHeaderStyle & HasColumnWidth & HasShrink & {
     spreadsheetId: string,
-    credentials: Credentials
+    credentials: GoogleSheetsCredentials
 }
 
 export type SettingsCsv = HasHeader
@@ -66,13 +66,11 @@ export type Settings = SettingsExcel | SettingsGoogleSheets | SettingsCsv
 export type DefaultSettings = HasSheets & HasHeader & HasHeaderStyle & HasShrink & HasColumnWidth
 
 export interface IDocumentProcessor<Document> {
-	getDocument(settings: Settings): Promise<Document>,
+	getDocument(): Promise<Document>,
 	insertData(data: object[]): Promise<void>
 	setSheetName(sheetName: string): Promise<void>,
 	setHeader(keys: string[]): Promise<void>,
-	setHeaderStyle(): Promise<void>,
 	setColumnWidth(columnWidth: ColumnWidth[]): Promise<void>,
-	shrink(): Promise<void>,
 }
 
 export class CredentialsError extends Error {

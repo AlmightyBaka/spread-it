@@ -1,21 +1,28 @@
 import { Workbook } from 'xlsx-populate'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 
-import ExcelProcessor from '../excel/processor'
-import { SheetType, Settings, DefaultSettings, IDocumentProcessor } from '../types'
+import { SheetType, Settings, DefaultSettings, IDocumentProcessor, SettingsExcel, SettingsExcelFile, SettingsGoogleSheets } from '../types'
 import defaultSettings from './defaultSettings'
+import ExcelProcessor from '../excel/processor'
+import GoogleSheetsProcessor from '../googleSheets/processor'
 
 type DocumentType<T> = 
     T extends SheetType.Excel ? Workbook :
     T extends SheetType.GoogleSheets ? GoogleSpreadsheet :
     never
 
+type SettingsType<T> = 
+    T extends SheetType.Excel ? SettingsExcel | SettingsExcelFile :
+    T extends SheetType.GoogleSheets ? SettingsGoogleSheets :
+    never
+
+
 export default class DocumentFactory<Document extends SheetType> {
 	private readonly type: SheetType
 	private readonly processor: IDocumentProcessor<Workbook | GoogleSpreadsheet>
-	private readonly settings: DefaultSettings
+	private readonly settings: SettingsType<Document>
 	
-	constructor(type: Document, settings?: Settings) {
+	constructor(type: Document, settings?: SettingsType<Document>) {
 		switch (type) {
 			case SheetType.Csv:
 				throw new Error('Not implemented yet')
@@ -25,14 +32,13 @@ export default class DocumentFactory<Document extends SheetType> {
 				this.processor = new ExcelProcessor()
 				break
 			case SheetType.GoogleSheets:
-				throw new Error('Not implemented yet')
-				// this.processor = new GoogleSheetsProcessor()
+				this.processor = new GoogleSheetsProcessor()
 				break
 			default:
 				throw new Error('Document type must be declared')
 		}
 		this.type = type
-		this.settings = { ...defaultSettings, ...settings }
+		this.settings = { ...defaultSettings, ...settings } as any // ???
 	}
 
 	public async create(data: Object[]): Promise<DocumentType<Document>> {
@@ -43,8 +49,7 @@ export default class DocumentFactory<Document extends SheetType> {
 			case SheetType.Excel:
 				return await this.createExcel(data) as DocumentType<Document>
 			case SheetType.GoogleSheets:
-				throw new Error('Not implemented yet')
-				// return await this.createGoogleSpreadsheet(data) as DocumentType<Document>
+				return await this.createGoogleSpreadsheet(data) as DocumentType<Document>
 			default:
 				throw new Error('Document type must be declared')
 		}
@@ -72,6 +77,26 @@ export default class DocumentFactory<Document extends SheetType> {
 	}
 
 	private async createGoogleSpreadsheet(data: Object[]): Promise<GoogleSpreadsheet> {
-		return await this.processor.getDocument(this.settings) as GoogleSpreadsheet
+		const processor = this.processor as GoogleSheetsProcessor
+		const settings = this.settings as SettingsGoogleSheets
+		const keys = Object.keys(data[0])
+
+		await processor.createDocument(settings.spreadsheetId, settings.credentials)
+		await processor.setHeader(keys)
+		await processor.insertData(data)
+
+		if (settings.sheetName) {
+			await processor.setSheetName(settings.sheetName)
+		}
+
+		if (settings.setHeader) {
+			await processor.setHeaderStyle(keys.length)
+
+			if (settings.columnWidth && settings.columnWidth.length > 0) {
+				await processor.setColumnWidth(settings.columnWidth)
+			}
+		}
+		
+		return await this.processor.getDocument() as GoogleSpreadsheet
 	}
 }
