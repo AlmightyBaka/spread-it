@@ -1,7 +1,7 @@
 import { Workbook } from 'xlsx-populate'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 
-import { SheetType, Settings, DefaultSettings, IDocumentProcessor, SettingsExcel, SettingsExcelFile, SettingsGoogleSheets } from '../types'
+import { SheetType, IDocumentProcessor, SettingsExcel, SettingsExcelFile, SettingsGoogleSheets } from '../types'
 import defaultSettings from './defaultSettings'
 import ExcelProcessor from '../excel/processor'
 import GoogleSheetsProcessor from '../googleSheets/processor'

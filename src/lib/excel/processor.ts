@@ -1,8 +1,8 @@
 import xlsx, { Sheet, Workbook } from 'xlsx-populate'
 
-import { IDocumentProcessor, ColumnWidth } from '../types'
+import { IExcelProcessor, ColumnWidth } from '../types'
 
-export default class ExcelProcessor implements IDocumentProcessor<Workbook> {
+export default class ExcelProcessor implements IExcelProcessor {
 	private document!: Workbook
 	private sheet!: Sheet
 	private isReady: boolean = false
@@ -85,8 +85,6 @@ export default class ExcelProcessor implements IDocumentProcessor<Workbook> {
 			this.sheet.column(column.index + 1).width(column.width)
 		}
 	}
-
-	async shrink(): Promise<void> {}
 
 	private setCell(x: number, y: number, value: string): void {
 		this.sheet.cell(y + 1, x + 1).value(value)

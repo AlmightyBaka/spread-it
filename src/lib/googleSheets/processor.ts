@@ -1,8 +1,8 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, WorksheetDimension } from 'google-spreadsheet'
 
-import { IDocumentProcessor, ColumnWidth, Settings, GoogleSheetsCredentials } from '../types'
+import { IGoogleSheetsProcessor, ColumnWidth, GoogleSheetsCredentials } from '../types'
 
-export default class GoogleSheetsProcessor implements IDocumentProcessor<GoogleSpreadsheet> {
+export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 	private document!: GoogleSpreadsheet
 	private sheet!: GoogleSpreadsheetWorksheet
 

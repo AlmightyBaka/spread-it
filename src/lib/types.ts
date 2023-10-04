@@ -1,5 +1,8 @@
 // TODO: set headers style
 
+import { GoogleSpreadsheet } from "google-spreadsheet"
+import { Workbook } from "xlsx-populate"
+
 export enum SheetType {
     Csv = 'csv',
     Excel = 'excel',
@@ -53,7 +56,6 @@ type HasShrink = { shrink?: boolean }
 export type SettingsExcel = HasSheets & HasHeader & HasHeaderStyle & HasColumnWidth
 export type SettingsExcelFile = HasSheets & HasHeader & HasHeaderStyle & HasColumnWidth & HasFile
 
-const a:SettingsExcel = {setHeader:true}
 export type SettingsGoogleSheets = HasSheets & HasHeader & HasHeaderStyle & HasColumnWidth & HasShrink & {
     spreadsheetId: string,
     credentials: GoogleSheetsCredentials
@@ -69,8 +71,20 @@ export interface IDocumentProcessor<Document> {
 	getDocument(): Promise<Document>,
 	insertData(data: object[]): Promise<void>
 	setSheetName(sheetName: string): Promise<void>,
+}
+export interface IExcelProcessor extends IDocumentProcessor<Workbook> {
+    ready(): Promise<void>,
 	setHeader(keys: string[]): Promise<void>,
+	setHeaderStyle(): Promise<void>,
 	setColumnWidth(columnWidth: ColumnWidth[]): Promise<void>,
+}
+export interface IGoogleSheetsProcessor extends IDocumentProcessor<GoogleSpreadsheet> {
+    createDocument(spreadsheetId: string, credentials: GoogleSheetsCredentials): Promise<void>,
+	getDocument(): Promise<GoogleSpreadsheet>,
+	setHeader(keys: string[]): Promise<void>,
+	setHeaderStyle(columnCount: number): Promise<void>,
+	setColumnWidth(columnWidth: ColumnWidth[]): Promise<void>,
+	shrink(x: number, y: number): Promise<void>,
 }
 
 export class CredentialsError extends Error {
