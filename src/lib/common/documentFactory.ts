@@ -1,17 +1,19 @@
 import { Workbook } from 'xlsx-populate'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 
-import { SheetType, IDocumentProcessor, SettingsExcel, SettingsExcelFile, SettingsGoogleSheets } from '../types'
+import { SheetType, IDocumentProcessor, SettingsExcel, SettingsExcelFile, SettingsGoogleSheets, SettingsCsv, SettingsCsvFile } from '../types'
 import defaultSettings from './defaultSettings'
 import ExcelProcessor from '../excel/processor'
 import GoogleSheetsProcessor from '../googleSheets/processor'
 
 type DocumentType<T> = 
+    T extends SheetType.Csv ? undefined :
     T extends SheetType.Excel ? Workbook :
     T extends SheetType.GoogleSheets ? GoogleSpreadsheet :
     never
 
 type SettingsType<T> = 
+    T extends SheetType.Csv ? SettingsCsv | SettingsCsvFile :
     T extends SheetType.Excel ? SettingsExcel | SettingsExcelFile :
     T extends SheetType.GoogleSheets ? SettingsGoogleSheets :
     never
@@ -57,17 +59,18 @@ export default class DocumentFactory<Document extends SheetType> {
 
 	private async createExcel(data: Object[]): Promise<Workbook> {
 		const processor = this.processor as ExcelProcessor
+		const settings = this.settings as SettingsExcel
 		
-		if (this.settings.sheetName) {
-			await processor.setSheetName(this.settings.sheetName)
+		if (settings.sheetName) {
+			await processor.setSheetName(settings.sheetName)
 		}
 
-		if (this.settings.setHeader) {
+		if (settings.setHeader) {
 			await processor.setHeader(Object.keys(data[0]))
 			await processor.setHeaderStyle()
 
-			if (this.settings.columnWidth && this.settings.columnWidth.length > 0) {
-				await processor.setColumnWidth(this.settings.columnWidth)
+			if (settings.columnWidth && settings.columnWidth.length > 0) {
+				await processor.setColumnWidth(settings.columnWidth)
 			}
 		}
 

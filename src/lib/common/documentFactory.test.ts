@@ -23,6 +23,18 @@ describe('Document factory module', () => {
 		columnWidth,
 	}
 
+	describe('CSV factory', () => {
+		test('should construct an document', async () => {
+			const factory =  () => {
+				new DocumentFactory(SheetType.Csv, { ...settings })
+			}
+
+			// const doc = await factory.create(data)
+			// expect(doc).toBeDefined()
+			expect(factory).toThrow('Not implemented yet')
+		})
+	})
+
 	describe('Excel factory', () => {
 		test('should construct an document', async () => {
 			const factory = new DocumentFactory(SheetType.Excel, settings)
@@ -75,5 +87,18 @@ describe('Document factory module', () => {
 			const doc = await factory.create(data)
 			expect(doc).toBeDefined()
 		}, 5000000)
+	})
+
+	describe('Edge cases', () => {
+		test('should throw an error', async () => {
+			const factory =  () => {
+				// @ts-ignore
+				new DocumentFactory('', { ...settings })
+			}
+
+			// const doc = await factory.create(data)
+			// expect(doc).toBeDefined()
+			expect(factory).toThrow('Document type must be declared')
+		})
 	})
 })
