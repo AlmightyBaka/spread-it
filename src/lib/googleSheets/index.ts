@@ -1,5 +1,12 @@
 import DocumentFactory from '../common/documentFactory'
-import { SettingsGoogleSheets, CredentialsError, SheetType } from '../types'
+import { SettingsGoogleSheets, SheetType } from '../types'
+
+class CredentialsError extends Error {
+    constructor(message: string) {
+        super(message)
+        this.name = 'CredentialsError'
+    }
+}
 
 /**
  * Writes a Google Sheets document.
@@ -17,12 +24,15 @@ export async function getGoogleSheets(data: object[], settings: SettingsGoogleSh
 
 function checkCredentials(settings: SettingsGoogleSheets) {
 	function isNonEmptyString(val: any): boolean {
-		return typeof val === 'string' && val.length > 0
+		return (typeof val === 'string') && val.length > 0
 	}
 
-	if (!isNonEmptyString(settings.spreadsheetId) ||
-		!isNonEmptyString(settings.credentials.serviceAccountEmail) ||
-		!isNonEmptyString(settings.credentials.privateKey)) {
+	if (!isNonEmptyString(settings.credentials!.serviceAccountEmail) ||
+		!isNonEmptyString(settings.credentials!.privateKey)) {
 		throw new CredentialsError('Google Sheets credentials must be provided')
 	}
+
+	if (!isNonEmptyString(settings.spreadsheetId)) {
+	throw new CredentialsError('Google Sheets spreadsheet id must be provided')
+}
 }

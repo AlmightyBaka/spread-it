@@ -86,10 +86,3 @@ export interface IGoogleSheetsProcessor extends IDocumentProcessor<GoogleSpreads
 	setColumnWidth(columnWidth: ColumnWidth[]): Promise<void>,
 	shrink(x: number, y: number): Promise<void>,
 }
-
-export class CredentialsError extends Error {
-    constructor(message: string) {
-        super(message)
-        this.name = 'CredentialsError'
-    }
-}
