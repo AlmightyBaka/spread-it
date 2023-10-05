@@ -27,18 +27,8 @@ export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 
 	async insertData(data: object[]): Promise<void> {
 		// gsheets requires object inserted to be flat
-		data = data.map((obj: any) => {
-			if (typeof obj === 'object'){
-				for (let key in obj) {
-					if (typeof obj[key] === 'object'){
-						obj[key] = JSON.stringify(obj)
-					}
-				}
-			}
+		data = data.map(this.flattenObj)
 
-			return obj
-		})
-		
 		await this.sheet.addRows(data as any)
 	}
 	async setSheetName(sheetName: string): Promise<void> {
@@ -91,5 +81,17 @@ export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 			hiddenByUser: false,
 			developerMetadata: []
 		}, { startIndex: index, endIndex: index + 1 })
+	}
+
+	private flattenObj(obj: any) {
+		if (typeof obj === 'object'){
+			for (let key in obj) {
+				if (typeof obj[key] === 'object'){
+					obj[key] = JSON.stringify(obj)
+				}
+			}
+		}
+
+		return obj
 	}
 }
