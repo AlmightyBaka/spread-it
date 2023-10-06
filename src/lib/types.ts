@@ -74,6 +74,7 @@ export type OutputExcel = HasOutputFile & HasOutputBuffer
 export type OutputGoogleSheets = HasOutputUpload
 
 export type OutputClosure<T extends SheetType> = (data: object[], settings?: Settings) => Promise<OutputType<T>>
+export type OutputClosureGoogleSheets          = (data: object[], settings: Settings) => Promise<OutputType<SheetType.GoogleSheets>>
 
 
 // document processor interfaces

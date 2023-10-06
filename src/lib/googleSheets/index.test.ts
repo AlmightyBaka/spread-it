@@ -1,16 +1,29 @@
 import { describe, expect, test } from '@jest/globals'
 
-import { getGoogleSheets } from '.'
+import getGoogleSheets from '.'
 
 describe('writing Google Sheets document module', () => {
 	test.skip('should construct an document', async () => {
-		await expect(getGoogleSheets([{}], {
+		const gsheets = await getGoogleSheets([{}], {
 			credentials: {
 				privateKey: '',
 				serviceAccountEmail: '',
 			},
 			spreadsheetId: '',
-		})).resolves.toBeUndefined()
+		})
+		await gsheets.upload()
+
+		await expect(true).resolves.toBeUndefined()
+	})
+
+	test('should construct a closure', async () => {
+		await expect(await getGoogleSheets([{}], {
+			credentials: {
+				privateKey: '',
+				serviceAccountEmail: '',
+			},
+			spreadsheetId: '',
+		})).resolves.toHaveProperty('upload')
 	})
 
 	test('should throw an CredentialsError exception', async () => {

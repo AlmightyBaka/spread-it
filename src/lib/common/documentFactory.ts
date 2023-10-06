@@ -12,7 +12,6 @@ export default class DocumentFactory<Document extends SheetType> {
 	private readonly processor: IDocumentProcessor<Workbook | GoogleSpreadsheet>
 	private readonly settings: SettingsType<Document>
 	
-	// TODO: move defining document type to DocumentFactory<SheetType> for consistency
 	constructor(type: Document, settings?: SettingsType<Document>) {
 		switch (type) {
 			case SheetType.Csv:

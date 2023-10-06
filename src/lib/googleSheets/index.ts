@@ -1,5 +1,5 @@
 import DocumentFactory from '../common/documentFactory'
-import { SettingsGoogleSheets, SheetType } from '../types'
+import { OutputClosureGoogleSheets, SettingsGoogleSheets, SheetType } from '../types'
 
 class CredentialsError extends Error {
     constructor(message: string) {
@@ -8,18 +8,28 @@ class CredentialsError extends Error {
     }
 }
 
-/**
- * Writes a Google Sheets document.
- * @param {object[]} data data to be inserted
- * @param {SettingsGoogleSheets} [settings] document settings
- * @throws {CredentialsError} thrown if no credentials or spreadsheet ID is provided
- * @return {Promise<void>} promise that resolves upon completion
- */
-export async function getGoogleSheets(data: object[], settings: SettingsGoogleSheets): Promise<void> {
-	checkCredentials(settings)
+const getGoogleSheets: OutputClosureGoogleSheets = async (data, settings) => {
+	const castedSettings = settings as SettingsGoogleSheets
+	checkCredentials(castedSettings)
 
-	const factory = new DocumentFactory(SheetType.GoogleSheets, settings)
-	await factory.create(data)
+	const factory = new DocumentFactory(SheetType.GoogleSheets, castedSettings)
+
+
+	/**
+	 * Writes a Google Sheets document.
+	 * @param {object[]} data data to be inserted
+	 * @param {SettingsGoogleSheets} [settings] document settings
+	 * @throws {CredentialsError} thrown if no credentials or spreadsheet ID is provided
+	 * @return {Promise<void>} promise that resolves upon completion
+	 */
+	async function upload(): Promise<void> {
+		await factory.create(data)
+	}
+
+
+	return {
+		upload
+	}
 }
 
 function checkCredentials(settings: SettingsGoogleSheets) {
@@ -33,6 +43,8 @@ function checkCredentials(settings: SettingsGoogleSheets) {
 	}
 
 	if (!isNonEmptyString(settings.spreadsheetId)) {
-	throw new CredentialsError('Google Sheets spreadsheet id must be provided')
+		throw new CredentialsError('Google Sheets spreadsheet id must be provided')
+	}
 }
-}
+
+export default getGoogleSheets
