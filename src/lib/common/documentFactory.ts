@@ -1,29 +1,18 @@
 import { Workbook } from 'xlsx-populate'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 
-import { SheetType, IDocumentProcessor, SettingsExcel, SettingsExcelFile, SettingsGoogleSheets, SettingsCsv, SettingsCsvFile } from '../types'
+import { SheetType, IDocumentProcessor, SettingsExcel, SettingsGoogleSheets } from '../types'
 import defaultSettings from './defaultSettings'
 import ExcelProcessor from '../excel/processor'
 import GoogleSheetsProcessor from '../googleSheets/processor'
-
-type DocumentType<T> = 
-    T extends SheetType.Csv ? undefined :
-    T extends SheetType.Excel ? Workbook :
-    T extends SheetType.GoogleSheets ? GoogleSpreadsheet :
-    never
-
-type SettingsType<T> = 
-    T extends SheetType.Csv ? SettingsCsv | SettingsCsvFile :
-    T extends SheetType.Excel ? SettingsExcel | SettingsExcelFile :
-    T extends SheetType.GoogleSheets ? SettingsGoogleSheets :
-    never
-
-
+import { SettingsType, DocumentType } from '../types'
+ 
 export default class DocumentFactory<Document extends SheetType> {
 	private readonly type: SheetType
 	private readonly processor: IDocumentProcessor<Workbook | GoogleSpreadsheet>
 	private readonly settings: SettingsType<Document>
 	
+	// TODO: move defining document type to DocumentFactory<SheetType> for consistency
 	constructor(type: Document, settings?: SettingsType<Document>) {
 		switch (type) {
 			case SheetType.Csv:

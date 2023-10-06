@@ -4,7 +4,7 @@ import { unlink } from 'node:fs'
 import { describe, expect, test, afterAll } from '@jest/globals'
 import xlsx, { Sheet } from 'xlsx-populate'
 
-import { getExcelFile, getExcelBuffer } from '.'
+import getExcel from '.'
 
 describe('writing Excel document module', () => {
 	const fileName = 'test-output.xlsx'
@@ -16,10 +16,8 @@ describe('writing Excel document module', () => {
 	})
 
 	test('should write a file', async () => {
-		await getExcelFile([{}], {
-			fileName,
-			sheetName,
-		})
+		const excel = await getExcel([{}], { sheetName })
+		await excel.file(fileName)
 
 		const doc = await xlsx.fromFileAsync(fileName)
 		expect(doc).toBeDefined()
@@ -28,20 +26,9 @@ describe('writing Excel document module', () => {
 		expect(sheet.name()).toBe(sheetName)
 	})
 
-	test('should write a file with default filename', async () => {
-		await getExcelFile([{}], {
-			sheetName,
-		})
-
-		const doc = await xlsx.fromFileAsync('output.xlsx')
-		expect(doc).toBeDefined()
-
-		const sheet = doc.sheet(0) as Sheet
-		expect(sheet.name()).toBe(sheetName)
-	})
-
 	test('should write a file with default settings', async () => {
-		await getExcelFile([{}])
+		const excel = await getExcel([{}])
+		await excel.file(fileName)
 
 		const doc = await xlsx.fromFileAsync('output.xlsx')
 		expect(doc).toBeDefined()
@@ -51,7 +38,8 @@ describe('writing Excel document module', () => {
 	})
 
 	test('should get a data buffer', async () => {
-		const buffer = await getExcelBuffer([{}])
+		const excel = await getExcel([{}])
+		const buffer = await excel.buffer()
 
 		const doc = await xlsx.fromDataAsync(buffer)
 		expect(doc).toBeDefined()

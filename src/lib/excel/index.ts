@@ -1,33 +1,40 @@
-import { SettingsExcelFile, SettingsExcel, SheetType } from '../types'
+import { SettingsExcelFile, SheetType, OutputClosure } from '../types'
 import DocumentFactory from '../common/documentFactory'
 
-// TODO: export as getExcel().file(), getExcel().buffer(), etc
-
-/**
- * Writes an .xlsx file.
- * @remarks only available in local environments
- * @param {object[]} data data to be inserted
- * @param {SettingsExcelFile} [settings] document settings
- * @return {Promise<void>} promise that resolves upon completion
- */
-export async function getExcelFile(data: object[], settings?: SettingsExcelFile): Promise<void> {
-	const factory = new DocumentFactory(SheetType.Excel, settings)
+const getExcel: OutputClosure<SheetType.Excel> = async (data, settings?) => {
+	const castedSettings = settings as SettingsExcelFile
+	const factory = new DocumentFactory(SheetType.Excel, castedSettings)
 	const doc = await factory.create(data)
 
-	await doc.toFileAsync(settings?.fileName ? settings.fileName : 'output.xlsx')
+
+	/**
+	 * Writes an .xlsx file.
+	 * @remarks only available in local environments
+	 * @param {object[]} data data to be inserted
+	 * @param {SettingsExcelFile} [settings] document settings
+	 * @return {Promise<void>} promise that resolves upon completion
+	 */
+	async function getFile(fileName: string): Promise<void> {
+		await doc.toFileAsync(fileName ? fileName : 'output.xlsx')
+	}
+
+	// TODO: add other output types
+	// https://www.npmjs.com/package/xlsx-populate#Workbook+outputAsync
+	/**
+	 * Gets an Excel document buffer.
+	 * @param {object[]} data data to be inserted
+	 * @param {SettingsExcel} [settings] document settings
+	 * @return {Promise<Buffer>} document buffer
+	 */
+	async function getBuffer(): Promise<Buffer> {
+		return await doc.outputAsync('nodebuffer') as Buffer
+	}
+
+
+	return {
+		file: getFile,
+		buffer: getBuffer,
+	}
 }
 
-// TODO: add other output types
-// https://www.npmjs.com/package/xlsx-populate#Workbook+outputAsync
-/**
- * Gets an Excel document buffer.
- * @param {object[]} data data to be inserted
- * @param {SettingsExcel} [settings] document settings
- * @return {Promise<Buffer>} document buffer
- */
-export async function getExcelBuffer(data: object[], settings?: SettingsExcel): Promise<Buffer> {
-	const factory = new DocumentFactory(SheetType.Excel, settings)
-	const doc = await factory.create(data)
-
-	return await doc.outputAsync('nodebuffer') as Buffer
-}
+export default getExcel

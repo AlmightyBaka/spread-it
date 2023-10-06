@@ -9,6 +9,24 @@ export enum SheetType {
     GoogleSheets = 'gsheets',
 }
 
+export type DocumentType<T> = 
+    T extends SheetType.Csv ? undefined :
+    T extends SheetType.Excel ? Workbook :
+    T extends SheetType.GoogleSheets ? GoogleSpreadsheet :
+    never
+
+export type SettingsType<T> = 
+    T extends SheetType.Csv ? SettingsCsv | SettingsCsvFile :
+    T extends SheetType.Excel ? SettingsExcel | SettingsExcelFile :
+    T extends SheetType.GoogleSheets ? SettingsGoogleSheets :
+    never
+
+export type OutputType<T> = 
+    T extends SheetType.Csv ? OutputCsv :
+    T extends SheetType.Excel ? OutputExcel :
+    T extends SheetType.GoogleSheets ? OutputGoogleSheets :
+    never
+
 export type ColumnWidth = {
     index: number,
     width: number,
@@ -19,37 +37,14 @@ export type GoogleSheetsCredentials = {
     privateKey: string,
 }
 
+
 // composable typing for describing possible document features
 // TODO: add HasSchema for headers instead of getting keys from the first object in data
-/**
- * {@link HasSheets}
- * @param {string} [sheetName] - sets sheet name; 'Data' by default
- */
 type HasSheets = { sheetName?: string }
-
-/**
- * @param {boolean} [setHeader] - sets header
- */
 type HasHeader = { setHeader?: boolean }
-
-/**
- * @param {boolean} [setHeaderStyle] - sets style if header is set
- */
 type HasHeaderStyle = { setHeaderStyle?: boolean }
-
-/**
- * @param {ColumnWidth[]} [columnWidth] - sets column widths
- */
 type HasColumnWidth = { columnWidth?: ColumnWidth[] }
-
-/**
- * @param {string} [fileName] - sets filename to write to
- */
 type HasFile = { fileName?: string }
-
-/**
- * @param {boolean} [shrink] - shrinks the document to fit data shape
- */
 type HasShrink = { shrink?: boolean }
 
 // concrete document features
@@ -67,6 +62,21 @@ export type SettingsCsvFile = HasHeader & HasFile
 export type Settings = SettingsExcel | SettingsGoogleSheets | SettingsCsv
 export type DefaultSettings = HasSheets & HasHeader & HasHeaderStyle & HasShrink & HasColumnWidth
 
+
+// composable typing for describing possible document outputs
+type HasOutputFile = { file: (fileName: string) => Promise<void> }
+type HasOutputBuffer = { buffer: () => Promise<Buffer> }
+type HasOutputUpload = { upload: () => Promise<void> }
+
+// concrete document outputs
+export type OutputCsv = HasOutputFile & HasOutputBuffer
+export type OutputExcel = HasOutputFile & HasOutputBuffer
+export type OutputGoogleSheets = HasOutputUpload
+
+export type OutputClosure<T extends SheetType> = (data: object[], settings?: Settings) => Promise<OutputType<T>>
+
+
+// document processor interfaces
 export interface IDocumentProcessor<Document> {
 	getDocument(): Promise<Document>,
 	insertData(data: object[]): Promise<void>
