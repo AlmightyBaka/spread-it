@@ -79,11 +79,12 @@ describe('Document factory module', () => {
 	})
 
 	describe('Google Sheets factory', () => {
-		test.skip('should construct an document', async () => {
+		test('should construct an document', async () => {
 			const factory = new DocumentFactory(SheetType.GoogleSheets, { ...settings, ... { credentials: {
-				privateKey: 'privateKey',
-				serviceAccountEmail: 'serviceAccountEmail'
-		}, spreadsheetId: 'spreadsheetId' }})
+				privateKey: process.env.GS_PRIVATE_KEY || '',
+				serviceAccountEmail: process.env.GS_EMAIL || '',
+			}, spreadsheetId: process.env.GS_ID || ''}})
+
 			const doc = await factory.create(data)
 			expect(doc).toBeDefined()
 		}, 5000000)
