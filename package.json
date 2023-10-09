@@ -2,7 +2,7 @@
   "name": "spread-it",
   "description": "A simple way to export your JavaScript objects into a spreadsheet",
   "author": "Almighty Baka <ivan@almightybaka.com> (https://almightybaka.com/)",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
