@@ -1,4 +1,6 @@
+/// <reference path="../index.d.ts"/>
 // TODO: set headers style
+
 
 import { GoogleSpreadsheet } from "google-spreadsheet"
 import { Workbook } from "xlsx-populate"
