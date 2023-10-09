@@ -17,8 +17,6 @@ const getGoogleSheets: OutputClosureGoogleSheets = async (data, settings) => {
 
 	/**
 	 * Writes a Google Sheets document.
-	 * @param {object[]} data data to be inserted
-	 * @param {SettingsGoogleSheets} [settings] document settings
 	 * @throws {CredentialsError} thrown if no credentials or spreadsheet ID is provided
 	 * @return {Promise<void>} promise that resolves upon completion
 	 */
