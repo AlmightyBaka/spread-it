@@ -114,9 +114,10 @@ describe('Document factory module', () => {
 	})
 
 	describe('Google Sheets factory', () => {
-		test.skip('should construct an document', async () => {
+		test('should construct an document', async () => {
 			const factory = new DocumentFactory(SheetType.GoogleSheets, {
 				...settings,
+				shrink: true,
 				...{
 					credentials: {
 						privateKey: process.env.GS_PRIVATE_KEY || '123',

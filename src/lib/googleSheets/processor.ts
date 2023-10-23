@@ -23,7 +23,7 @@ export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 		this.document = new GoogleSpreadsheet(spreadsheetId)
 		await this.document.useServiceAccountAuth({
 			client_email: credentials.serviceAccountEmail,
-			private_key: credentials.privateKey,
+			private_key: credentials.privateKey.split(String.raw`\n`).join('\n'),
 		})
 
 		// setting up spreadsheet

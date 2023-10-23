@@ -4,16 +4,17 @@ import getGoogleSheets from '.'
 
 describe('writing Google Sheets document module', () => {
 	test.skip('should construct an document', async () => {
-		const gsheets = await getGoogleSheets([{}], {
+		const gsheets = await getGoogleSheets([{ data: '' }], {
+			shrink: true,
 			credentials: {
-				privateKey: '',
-				serviceAccountEmail: '',
+				privateKey: process.env.GS_PRIVATE_KEY || '123',
+				serviceAccountEmail: process.env.GS_EMAIL || '123',
 			},
-			spreadsheetId: '',
+			spreadsheetId: process.env.GS_ID || '123',
 		})
 		await gsheets.upload()
 
-		await expect(true).resolves.toBeUndefined()
+		await expect(true).toBeTruthy()
 	})
 
 	test('should construct a closure', async () => {
