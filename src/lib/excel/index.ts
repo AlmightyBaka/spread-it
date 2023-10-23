@@ -1,5 +1,3 @@
-
-
 import { SettingsExcelFile, SheetType, OutputClosure } from '../types'
 import DocumentFactory from '../common/documentFactory'
 
@@ -9,7 +7,6 @@ const getExcel: OutputClosure<SheetType.Excel> = async (data, settings?) => {
 	const castedSettings = settings as SettingsExcelFile
 	const factory = new DocumentFactory(SheetType.Excel, castedSettings)
 	const doc = await factory.create(data)
-
 
 	/**
 	 * Writes an .xlsx file.
@@ -25,9 +22,8 @@ const getExcel: OutputClosure<SheetType.Excel> = async (data, settings?) => {
 	 * @return {Promise<Buffer>} document buffer
 	 */
 	async function getBuffer(): Promise<Buffer> {
-		return await doc.outputAsync('nodebuffer') as Buffer
+		return (await doc.outputAsync('nodebuffer')) as Buffer
 	}
-
 
 	return {
 		file: getFile,

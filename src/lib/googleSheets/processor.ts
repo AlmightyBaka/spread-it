@@ -1,12 +1,23 @@
-import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet, WorksheetDimension } from 'google-spreadsheet'
+import {
+	GoogleSpreadsheet,
+	GoogleSpreadsheetWorksheet,
+	WorksheetDimension,
+} from 'google-spreadsheet'
 
-import { IGoogleSheetsProcessor, ColumnWidth, GoogleSheetsCredentials } from '../types'
+import {
+	IGoogleSheetsProcessor,
+	ColumnWidth,
+	GoogleSheetsCredentials,
+} from '../types'
 
 export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 	private document!: GoogleSpreadsheet
 	private sheet!: GoogleSpreadsheetWorksheet
 
-	async createDocument(spreadsheetId: string, credentials: GoogleSheetsCredentials): Promise<void> {
+	async createDocument(
+		spreadsheetId: string,
+		credentials: GoogleSheetsCredentials,
+	): Promise<void> {
 		// authenticating
 		// TODO: consider other ways to authenticate
 		this.document = new GoogleSpreadsheet(spreadsheetId)
@@ -40,7 +51,7 @@ export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 	}
 
 	async setHeaderStyle(columnCount: number): Promise<void> {
-		await this.updateSize(this.sheet, 'ROWS', 0, 25 )
+		await this.updateSize(this.sheet, 'ROWS', 0, 25)
 		const endColumn = String.fromCharCode('A'.charCodeAt(0) + --columnCount)
 		await this.sheet.loadCells(`A1:${endColumn}1`)
 
@@ -56,16 +67,21 @@ export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 	}
 
 	async setColumnWidth(columnWidth: ColumnWidth[]): Promise<void> {
-		columnWidth = columnWidth.map(column => {
+		columnWidth = columnWidth.map((column) => {
 			if (column.width <= 0) {
 				column.width = 1
 			}
-			
+
 			return column
 		})
 
-		for (let column of columnWidth) {
-			await this.updateSize(this.sheet, 'COLUMNS', column.index, Math.ceil(column.width * 7.5))
+		for (const column of columnWidth) {
+			await this.updateSize(
+				this.sheet,
+				'COLUMNS',
+				column.index,
+				Math.ceil(column.width * 7.5),
+			)
 		}
 	}
 
@@ -73,20 +89,28 @@ export default class GoogleSheetsProcessor implements IGoogleSheetsProcessor {
 		await this.sheet.resize({ rowCount: y + 1, columnCount: x })
 	}
 
-	private async updateSize(sheet: GoogleSpreadsheetWorksheet, dimension: WorksheetDimension,
-		index: number, size: number): Promise<void> {
-		await sheet.updateDimensionProperties(dimension, {
-			pixelSize: size,
-			hiddenByFilter: false,
-			hiddenByUser: false,
-			developerMetadata: []
-		}, { startIndex: index, endIndex: index + 1 })
+	private async updateSize(
+		sheet: GoogleSpreadsheetWorksheet,
+		dimension: WorksheetDimension,
+		index: number,
+		size: number,
+	): Promise<void> {
+		await sheet.updateDimensionProperties(
+			dimension,
+			{
+				pixelSize: size,
+				hiddenByFilter: false,
+				hiddenByUser: false,
+				developerMetadata: [],
+			},
+			{ startIndex: index, endIndex: index + 1 },
+		)
 	}
 
 	private flattenObj(obj: any) {
-		if (typeof obj === 'object'){
-			for (let key in obj) {
-				if (typeof obj[key] === 'object'){
+		if (typeof obj === 'object') {
+			for (const key in obj) {
+				if (typeof obj[key] === 'object') {
 					obj[key] = JSON.stringify(obj)
 				}
 			}

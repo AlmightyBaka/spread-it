@@ -8,6 +8,9 @@ import { SettingsCsvFile } from '../types'
  * @return {Promise<void>} promise that resolves upon completion
  * @deprecated not implemented yet
  */
-export default async function getCsvFile(data: object[], settings?: SettingsCsvFile): Promise<void> {
+export default async function getCsvFile(
+	data: object[],
+	settings?: SettingsCsvFile,
+): Promise<void> {
 	throw new Error('Method not implemented.')
 }

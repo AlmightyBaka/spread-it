@@ -1,17 +1,22 @@
 import { Workbook } from 'xlsx-populate'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 
-import { SheetType, IDocumentProcessor, SettingsExcel, SettingsGoogleSheets } from '../types'
+import {
+	SheetType,
+	IDocumentProcessor,
+	SettingsExcel,
+	SettingsGoogleSheets,
+} from '../types'
 import defaultSettings from './defaultSettings'
 import ExcelProcessor from '../excel/processor'
 import GoogleSheetsProcessor from '../googleSheets/processor'
 import { SettingsType, DocumentType } from '../types'
- 
+
 export default class DocumentFactory<Document extends SheetType> {
 	private readonly type: SheetType
 	private readonly processor: IDocumentProcessor<Workbook | GoogleSpreadsheet>
 	private readonly settings: SettingsType<Document>
-	
+
 	constructor(type: Document, settings?: SettingsType<Document>) {
 		switch (type) {
 			case SheetType.Csv:
@@ -31,24 +36,26 @@ export default class DocumentFactory<Document extends SheetType> {
 		this.settings = { ...defaultSettings, ...settings } as any // ???
 	}
 
-	public async create(data: Object[]): Promise<DocumentType<Document>> {
+	public async create(data: object[]): Promise<DocumentType<Document>> {
 		switch (this.type) {
 			case SheetType.Csv:
 				throw new Error('Not implemented yet')
-				// return await this.createCsv(data) as DocumentType<Document>
+			// return await this.createCsv(data) as DocumentType<Document>
 			case SheetType.Excel:
-				return await this.createExcel(data) as DocumentType<Document>
+				return (await this.createExcel(data)) as DocumentType<Document>
 			case SheetType.GoogleSheets:
-				return await this.createGoogleSpreadsheet(data) as DocumentType<Document>
+				return (await this.createGoogleSpreadsheet(
+					data,
+				)) as DocumentType<Document>
 			default:
 				throw new Error('Document type must be declared')
 		}
 	}
 
-	private async createExcel(data: Object[]): Promise<Workbook> {
+	private async createExcel(data: object[]): Promise<Workbook> {
 		const processor = this.processor as ExcelProcessor
 		const settings = this.settings as SettingsExcel
-		
+
 		if (settings.sheetName) {
 			await processor.setSheetName(settings.sheetName)
 		}
@@ -64,10 +71,12 @@ export default class DocumentFactory<Document extends SheetType> {
 
 		await processor.insertData(data)
 
-		return await processor.getDocument() as Workbook
+		return (await processor.getDocument()) as Workbook
 	}
 
-	private async createGoogleSpreadsheet(data: Object[]): Promise<GoogleSpreadsheet> {
+	private async createGoogleSpreadsheet(
+		data: object[],
+	): Promise<GoogleSpreadsheet> {
 		const processor = this.processor as GoogleSheetsProcessor
 		const settings = this.settings as SettingsGoogleSheets
 		const keys = Object.keys(data[0])
@@ -87,7 +96,7 @@ export default class DocumentFactory<Document extends SheetType> {
 				await processor.setColumnWidth(settings.columnWidth)
 			}
 		}
-		
-		return await this.processor.getDocument() as GoogleSpreadsheet
+
+		return (await this.processor.getDocument()) as GoogleSpreadsheet
 	}
 }

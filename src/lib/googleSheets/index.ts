@@ -1,11 +1,15 @@
 import DocumentFactory from '../common/documentFactory'
-import { OutputClosureGoogleSheets, SettingsGoogleSheets, SheetType } from '../types'
+import {
+	OutputClosureGoogleSheets,
+	SettingsGoogleSheets,
+	SheetType,
+} from '../types'
 
 class CredentialsError extends Error {
-    constructor(message: string) {
-        super(message)
-        this.name = 'CredentialsError'
-    }
+	constructor(message: string) {
+		super(message)
+		this.name = 'CredentialsError'
+	}
 }
 
 const getGoogleSheets: OutputClosureGoogleSheets = async (data, settings) => {
@@ -13,7 +17,6 @@ const getGoogleSheets: OutputClosureGoogleSheets = async (data, settings) => {
 	checkCredentials(castedSettings)
 
 	const factory = new DocumentFactory(SheetType.GoogleSheets, castedSettings)
-
 
 	/**
 	 * Writes a Google Sheets document.
@@ -24,19 +27,20 @@ const getGoogleSheets: OutputClosureGoogleSheets = async (data, settings) => {
 		await factory.create(data)
 	}
 
-
 	return {
-		upload
+		upload,
 	}
 }
 
 function checkCredentials(settings: SettingsGoogleSheets) {
 	function isNonEmptyString(val: any): boolean {
-		return (typeof val === 'string') && val.length > 0
+		return typeof val === 'string' && val.length > 0
 	}
 
-	if (!isNonEmptyString(settings.credentials!.serviceAccountEmail) ||
-		!isNonEmptyString(settings.credentials!.privateKey)) {
+	if (
+		!isNonEmptyString(settings.credentials!.serviceAccountEmail) ||
+		!isNonEmptyString(settings.credentials!.privateKey)
+	) {
 		throw new CredentialsError('Google Sheets credentials must be provided')
 	}
 

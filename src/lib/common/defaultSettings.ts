@@ -1,7 +1,7 @@
 import { DefaultSettings } from '../types'
 
 const defaultSettings: DefaultSettings = {
-    sheetName: 'Data',
+	sheetName: 'Data',
 	setHeader: false,
 	setHeaderStyle: false,
 	shrink: false,

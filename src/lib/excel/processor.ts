@@ -36,7 +36,8 @@ export default class ExcelProcessor implements IExcelProcessor {
 
 			keys.forEach((key, x) => {
 				const value = obj[key]
-				const valueString = typeof value === "object" ? JSON.stringify(value) : String(value)
+				const valueString =
+					typeof value === 'object' ? JSON.stringify(value) : String(value)
 
 				this.setCell(x, y + rowIndent, valueString)
 			})
@@ -61,7 +62,7 @@ export default class ExcelProcessor implements IExcelProcessor {
 
 	async setHeaderStyle(): Promise<void> {
 		await this.ready()
-	
+
 		if (!this.hasHeaders) return
 
 		this.sheet.row(1).height(25)
@@ -72,16 +73,16 @@ export default class ExcelProcessor implements IExcelProcessor {
 			fill: {
 				type: 'solid',
 				color: {
-					rgb: 'F8A98E'
-				}
-			}
+					rgb: 'F8A98E',
+				},
+			},
 		})
 	}
-	
+
 	async setColumnWidth(columnWidth: ColumnWidth[]): Promise<void> {
 		await this.ready()
-		
-		for (let column of columnWidth) {
+
+		for (const column of columnWidth) {
 			this.sheet.column(column.index + 1).width(column.width)
 		}
 	}
