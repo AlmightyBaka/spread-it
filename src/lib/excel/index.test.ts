@@ -32,7 +32,7 @@ describe('writing Excel document module', () => {
 
 		const doc = await xlsx.fromFileAsync(fileName)
 		expect(doc).toBeDefined()
-		
+
 		const sheet = doc.sheet(0) as Sheet
 		expect(sheet.name()).toBe('Data')
 	})
@@ -43,7 +43,7 @@ describe('writing Excel document module', () => {
 
 		const doc = await xlsx.fromDataAsync(buffer)
 		expect(doc).toBeDefined()
-		
+
 		const sheet = doc.sheet(0) as Sheet
 		expect(sheet.name()).toBe('Data')
 	})
