@@ -3,6 +3,11 @@ import DocumentFactory from '../common/documentFactory'
 
 // TODO: add other output types
 // https://www.npmjs.com/package/xlsx-populate#Workbook+outputAsync
+
+/**
+ * Creates an Excel document handler.
+ * @return closure with getFile(fileName) and getBuffer() method
+ */
 const getExcel: OutputClosure<SheetType.Excel> = async (data, settings?) => {
 	const castedSettings = settings as SettingsExcelFile
 	const factory = new DocumentFactory(SheetType.Excel, castedSettings)

@@ -1,5 +1,5 @@
 - [ ] Add .csv export
-- [ ] Add TSDoc
+- [x] Add TSDoc
 - [ ] Add both CommonJS and ES Module builds
 - [ ] Update `google-spreadsheet` to `v4`
 - [ ] Improve data insertion performance

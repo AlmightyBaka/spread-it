@@ -12,6 +12,11 @@ class CredentialsError extends Error {
 	}
 }
 
+/**
+ * Creates a Google Sheets document handler.
+ * @throws {CredentialsError} thrown if no credentials or spreadsheet ID is provided
+ * @return closure with upload() method
+ */
 const getGoogleSheets: OutputClosureGoogleSheets = async (data, settings) => {
 	const castedSettings = settings as SettingsGoogleSheets
 	checkCredentials(castedSettings)
@@ -20,7 +25,6 @@ const getGoogleSheets: OutputClosureGoogleSheets = async (data, settings) => {
 
 	/**
 	 * Writes a Google Sheets document.
-	 * @throws {CredentialsError} thrown if no credentials or spreadsheet ID is provided
 	 * @return {Promise<void>} promise that resolves upon completion
 	 */
 	async function upload(): Promise<void> {
