@@ -17,13 +17,15 @@ describe('writing Google Sheets document module', () => {
 	})
 
 	test('should construct a closure', async () => {
-		await expect(await getGoogleSheets([{}], {
+		const gsClosure = await getGoogleSheets([{}], {
 			credentials: {
-				privateKey: '',
-				serviceAccountEmail: '',
+				privateKey: '123',
+				serviceAccountEmail: '123',
 			},
-			spreadsheetId: '',
-		})).resolves.toHaveProperty('upload')
+			spreadsheetId: '123',
+		})
+
+		expect(gsClosure).toHaveProperty('upload')
 	})
 
 	test('should throw an CredentialsError exception', async () => {
